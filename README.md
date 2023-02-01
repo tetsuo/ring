@@ -1,3 +1,3 @@
 # ring
 
-simple circular buffer.
+efficient circular buffer implementation.
