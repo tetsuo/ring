@@ -15,7 +15,7 @@ func TestRing(t *testing.T) {
 		{
 			desc: "put and get",
 			f: func(t *testing.T) {
-				list := ring.NewRing(2)
+				list := ring.NewRing[int](2)
 
 				list.Put(0, 42)
 				list.Put(1, 555)
@@ -27,7 +27,7 @@ func TestRing(t *testing.T) {
 		{
 			desc: "overflow",
 			f: func(t *testing.T) {
-				list := ring.NewRing(2)
+				list := ring.NewRing[int](2)
 
 				list.Put(0, 42)
 				list.Put(1, 555)
@@ -41,19 +41,19 @@ func TestRing(t *testing.T) {
 		{
 			desc: "del",
 			f: func(t *testing.T) {
-				list := ring.NewRing(2)
+				list := ring.NewRing[int](2)
 
 				list.Put(0, 42)
 				assert.EqualValues(t, 42, list.Get(0))
 
 				list.Del(0)
-				assert.EqualValues(t, nil, list.Get(0))
+				assert.EqualValues(t, 0, list.Get(0))
 			},
 		},
 		{
 			desc: "multiple of two",
 			f: func(t *testing.T) {
-				list := ring.NewRing(3)
+				list := ring.NewRing[int](3)
 
 				assert.EqualValues(t, 4, list.Size())
 			},

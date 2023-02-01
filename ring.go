@@ -1,13 +1,13 @@
 package ring
 
-type Ring struct {
+type Ring[T any] struct {
 	size int
 	mask int
-	buf  []interface{}
+	buf  []T
 }
 
-func NewRing(size int) *Ring {
-	r := new(Ring)
+func NewRing[T any](size int) *Ring[T] {
+	r := new(Ring[T])
 	if size > 0 && (size&(size-1)) < 0 {
 		r.reset(size)
 	} else {
@@ -20,31 +20,32 @@ func NewRing(size int) *Ring {
 	return r
 }
 
-func (c *Ring) reset(size int) {
-	*c = Ring{
+func (c *Ring[T]) reset(size int) {
+	*c = Ring[T]{
 		mask: size - 1,
 		size: size,
-		buf:  make([]interface{}, size),
+		buf:  make([]T, size),
 	}
 }
 
-func (c *Ring) Size() int {
+func (c *Ring[T]) Size() int {
 	return c.size
 }
 
-func (c *Ring) Get(index int) interface{} {
+func (c *Ring[T]) Get(index int) T {
 	return c.buf[index&c.mask]
 }
 
-func (c *Ring) Put(index int, val interface{}) int {
+func (c *Ring[T]) Put(index int, val T) int {
 	i := index & c.mask
 	c.buf[i] = val
 	return i
 }
 
-func (c *Ring) Del(index int) interface{} {
+func (c *Ring[T]) Del(index int) T {
 	i := index & c.mask
 	val := c.buf[i]
-	c.buf[i] = nil
+	x := *new(T)
+	c.buf[i] = x
 	return val
 }
