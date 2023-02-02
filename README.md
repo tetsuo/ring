@@ -1,6 +1,6 @@
 # ring
 
-A Ring represents a data structure (known as [circular buffer](https://en.wikipedia.org/wiki/Circular_buffer)) that uses a single fixed-size buffer as if it were connected end-to-end
+A Ring represents a data structure (known as [circular buffer](https://en.wikipedia.org/wiki/Circular_buffer)) that uses a single fixed-size buffer as if it were connected end-to-end.
 
 In this representation, the capacity of a buffer must be a power of 2.
 
