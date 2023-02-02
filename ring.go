@@ -1,17 +1,17 @@
 package ring
 
 type Ring[T any] struct {
-	size int
-	mask int
+	size uint
+	mask uint
 	buf  []T
 }
 
-func NewRing[T any](size int) *Ring[T] {
+func NewRing[T any](size uint) *Ring[T] {
 	r := new(Ring[T])
 	if size > 0 && (size&(size-1) == 0) {
 		r.reset(size)
 	} else {
-		n := 1
+		var n uint = 1
 		for n < size {
 			n <<= 1
 		}
@@ -20,7 +20,7 @@ func NewRing[T any](size int) *Ring[T] {
 	return r
 }
 
-func (c *Ring[T]) reset(size int) {
+func (c *Ring[T]) reset(size uint) {
 	*c = Ring[T]{
 		mask: size - 1,
 		size: size,
@@ -28,24 +28,23 @@ func (c *Ring[T]) reset(size int) {
 	}
 }
 
-func (c *Ring[T]) Size() int {
+func (c *Ring[T]) Size() uint {
 	return c.size
 }
 
-func (c *Ring[T]) Get(index int) T {
+func (c *Ring[T]) Get(index uint) T {
 	return c.buf[index&c.mask]
 }
 
-func (c *Ring[T]) Put(index int, val T) int {
+func (c *Ring[T]) Put(index uint, val T) uint {
 	i := index & c.mask
 	c.buf[i] = val
 	return i
 }
 
-func (c *Ring[T]) Del(index int) T {
+func (c *Ring[T]) Del(index uint) T {
 	i := index & c.mask
 	val := c.buf[i]
-	x := *new(T)
-	c.buf[i] = x
+	c.buf[i] = *new(T)
 	return val
 }
