@@ -8,7 +8,7 @@ type Ring[T any] struct {
 
 func NewRing[T any](size int) *Ring[T] {
 	r := new(Ring[T])
-	if size > 0 && (size&(size-1)) < 0 {
+	if size > 0 && (size&(size-1) == 0) {
 		r.reset(size)
 	} else {
 		n := 1
