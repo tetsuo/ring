@@ -1,6 +1,7 @@
 package ring_test
 
 import (
+	"math"
 	"testing"
 
 	"github.com/onur1/ring"
@@ -36,6 +37,28 @@ func TestRing(t *testing.T) {
 				assert.EqualValues(t, 30, list.Get(0))
 				assert.EqualValues(t, 555, list.Get(1))
 				assert.EqualValues(t, 30, list.Get(2))
+
+				assert.EqualValues(t, 555, list.Get(math.MaxInt))
+				n := 1
+				assert.EqualValues(t, 30, list.Get(math.MaxInt+n))
+				n = 2
+				list.Put(math.MaxInt+n, 83)
+				assert.EqualValues(t, 83, list.Get(math.MaxInt+n))
+			},
+		},
+		{
+			desc: "negative indice",
+			f: func(t *testing.T) {
+				list := ring.NewRing[int](2)
+
+				list.Put(0, 42)
+				list.Put(1, 555)
+				list.Put(2, 30)
+
+				assert.EqualValues(t, 30, list.Get(0))
+				assert.EqualValues(t, 555, list.Get(-1))
+				assert.EqualValues(t, 30, list.Get(-2))
+				assert.EqualValues(t, 555, list.Get(-3))
 			},
 		},
 		{
