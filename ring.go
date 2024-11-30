@@ -1,57 +1,61 @@
 package ring
 
-// A Ring represents a data structure that uses a single fixed-size buffer
-// as if it were connected end-to-end.
+// A Ring is a fixed-size circular buffer.
 type Ring[T any] struct {
-	size int
-	mask int
-	buf  []T
+	size int // Capacity of the buffer
+	mask int // Bitmask for efficient modulo operation
+	buf  []T // Underlying buffer
 }
 
-// NewRing returns a new Ring with the given size which must be a power of 2.
-func NewRing[T any](size int) *Ring[T] {
-	r := new(Ring[T])
-	if size > 0 && (size&(size-1) == 0) {
-		r.reset(size)
-	} else {
-		n := 1
-		for n < size {
-			n <<= 1
-		}
-		r.reset(n)
+// New creates a new Ring with the specified size.
+// The size is rounded up to the nearest power of 2 if it isn't already.
+func New[T any](size int) *Ring[T] {
+	if size <= 0 {
+		panic("size must be greater than 0")
 	}
-	return r
-}
-
-func (c *Ring[T]) reset(size int) {
-	*c = Ring[T]{
-		mask: size - 1,
+	size = nextPowerOfTwo(size)
+	return &Ring[T]{
 		size: size,
+		mask: size - 1,
 		buf:  make([]T, size),
 	}
 }
 
 // Size returns the capacity of the internal buffer.
-func (c *Ring[T]) Size() int {
-	return c.size
+func (r *Ring[T]) Size() int {
+	return r.size
 }
 
 // Get returns the value at given index.
-func (c *Ring[T]) Get(index int) T {
-	return c.buf[index&c.mask]
+func (r *Ring[T]) Get(index int) T {
+	return r.buf[index&r.mask]
 }
 
 // Put inserts a value at given index.
-func (c *Ring[T]) Put(index int, val T) int {
-	i := index & c.mask
-	c.buf[i] = val
+func (r *Ring[T]) Put(index int, val T) int {
+	i := index & r.mask
+	r.buf[i] = val
 	return i
 }
 
 // Del deletes a value at given index and returns it.
-func (c *Ring[T]) Del(index int) T {
-	i := index & c.mask
-	val := c.buf[i]
-	c.buf[i] = *new(T)
+func (r *Ring[T]) Del(index int) T {
+	i := index & r.mask
+	val := r.buf[i]
+	var zero T
+	r.buf[i] = zero
 	return val
+}
+
+// Helper function to calculate the next power of 2 for a given integer.
+// If the input is already a power of 2, it returns the same value.
+func nextPowerOfTwo(n int) int {
+	if n&(n-1) == 0 {
+		return n
+	}
+	power := 1
+	for power < n {
+		power <<= 1
+	}
+	return power
 }

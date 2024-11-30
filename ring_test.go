@@ -4,8 +4,8 @@ import (
 	"math"
 	"testing"
 
-	"github.com/tetsuo/ring"
 	"github.com/stretchr/testify/assert"
+	"github.com/tetsuo/ring"
 )
 
 func TestRing(t *testing.T) {
@@ -16,7 +16,7 @@ func TestRing(t *testing.T) {
 		{
 			desc: "put and get",
 			f: func(t *testing.T) {
-				list := ring.NewRing[int](2)
+				list := ring.New[int](2)
 
 				list.Put(0, 42)
 				list.Put(1, 555)
@@ -28,7 +28,7 @@ func TestRing(t *testing.T) {
 		{
 			desc: "overflow",
 			f: func(t *testing.T) {
-				list := ring.NewRing[int](2)
+				list := ring.New[int](2)
 
 				list.Put(0, 42)
 				list.Put(1, 555)
@@ -49,7 +49,7 @@ func TestRing(t *testing.T) {
 		{
 			desc: "negative indice",
 			f: func(t *testing.T) {
-				list := ring.NewRing[int](2)
+				list := ring.New[int](2)
 
 				list.Put(0, 42)
 				list.Put(1, 555)
@@ -64,7 +64,7 @@ func TestRing(t *testing.T) {
 		{
 			desc: "del",
 			f: func(t *testing.T) {
-				list := ring.NewRing[int](2)
+				list := ring.New[int](2)
 
 				list.Put(0, 42)
 				assert.EqualValues(t, 42, list.Get(0))
@@ -76,9 +76,17 @@ func TestRing(t *testing.T) {
 		{
 			desc: "multiple of two",
 			f: func(t *testing.T) {
-				list := ring.NewRing[int](3)
+				list := ring.New[int](3)
 
 				assert.EqualValues(t, 4, list.Size())
+			},
+		},
+		{
+			desc: "size panic",
+			f: func(t *testing.T) {
+				assert.Panics(t, func() {
+					_ = ring.New[int](0)
+				})
 			},
 		},
 	}

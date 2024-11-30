@@ -7,7 +7,7 @@ import (
 )
 
 func ExampleRing() {
-	r := ring.NewRing[int](2)
+	r := ring.New[int](2)
 
 	r.Put(0, 42)
 	r.Put(1, 555)

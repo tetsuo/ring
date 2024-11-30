@@ -1,13 +1,13 @@
 # ring
 
-A Ring represents a data structure (known as [circular buffer](https://en.wikipedia.org/wiki/Circular_buffer)) that uses a single fixed-size buffer as if it were connected end-to-end.
+A `Ring` is a fixed size [circular buffer](https://en.wikipedia.org/wiki/Circular_buffer).
 
-In this representation, the capacity of a buffer must be a power of 2.
+The capacity of a buffer is always rounded up to the nearest power of 2 for optimal performance.
 
 ## Example
 
 ```go
-r := ring.NewRing[int](2)
+r := ring.New[int](2)
 
 r.Put(0, 42)
 r.Put(1, 555)
