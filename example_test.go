@@ -3,7 +3,7 @@ package ring_test
 import (
 	"fmt"
 
-	"github.com/onur1/ring"
+	"github.com/tetsuo/ring"
 )
 
 func ExampleRing() {

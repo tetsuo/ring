@@ -1,4 +1,4 @@
-module github.com/onur1/ring
+module github.com/tetsuo/ring
 
 go 1.18
 

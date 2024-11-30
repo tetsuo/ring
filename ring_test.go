@@ -4,7 +4,7 @@ import (
 	"math"
 	"testing"
 
-	"github.com/onur1/ring"
+	"github.com/tetsuo/ring"
 	"github.com/stretchr/testify/assert"
 )
 
